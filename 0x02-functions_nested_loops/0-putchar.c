@@ -3,6 +3,7 @@
  * main - Entry point.
  * Description: write a program that prints "_putchar" followed by a new line.
  * Return: Always 0 (Success.)
+ * Written by:  Pedro Olatunde 
  */
 int main(void)
 {
