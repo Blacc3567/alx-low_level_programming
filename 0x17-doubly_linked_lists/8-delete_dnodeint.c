@@ -1,66 +1,50 @@
 #include "lists.h"
-#include <stdlib.h>
 
 /**
- * delete_dnodeint_at_index - delete node at give index
- * @head:list
- * @index:given index
- * Return: -1 or 0
- */
+ * delete_dnodeint_at_index - deletes the node at index of a dlistint_t list.
+ * @head: pointer to the list.
+ * @index: position of the node to delete.
+ * Return: 1 if it succeeded, -1 if it failed.
+ **/
 int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 {
-	dlistint_t *start;
-	unsigned int i;
-	unsigned int len;
-	len = len_node(&head);
+	dlistint_t *aux_node = *head;
+	dlistint_t *node_to_delete = *head;
+	unsigned int idx;
+	unsigned int cont = 0;
 
-	start = *head;
-	if (*head == NULL)
+	/* border case for empty list */
+	if (!(*head))
 		return (-1);
+
+	/* border case for delete at the beginning */
 	if (index == 0)
 	{
-		start = start->next;
-		free(*head);
-		*head = start;
-		if (start != NULL)
-			start->prev = NULL;
+		*head = node_to_delete->next;
+		free(node_to_delete);
+		if (*head)
+			(*head)->prev = NULL;
 		return (1);
 	}
-	for (i = 0; i <= index - 1; i++)
+
+	/* search of position to delete */
+	idx = index - 1;
+	while (aux_node && cont != idx)
 	{
-		start = start->next;
-		if (!start)
-			return (-1);
+		cont++;
+		aux_node = aux_node->next;
 	}
-	if (len - 1 == index)
+
+	/* general case */
+	if (cont == idx && aux_node)
 	{
-		start->prev->next = NULL;
-		free(start);
+		node_to_delete = aux_node->next;
+		if (node_to_delete->next)
+		node_to_delete->next->prev = aux_node;
+		aux_node->next = node_to_delete->next;
+		free(node_to_delete);
 		return (1);
 	}
-	start->prev->next = start->next;
-	start->next->prev = start->prev;
-	free(start);
-	return (1);
+
+	return (-1);
 }
-
-/**
- * len_node - list len
- *
- * @node:list
- * Return:unsigned int
- */
-unsigned int len_node(dlistint_t **node)
-{
-	unsigned int len = 0;
-	dlistint_t *start;
-
-	start = *node;
-	while (start != NULL)
-	{
-		len += 1;
-		start = start->next;
-	}
-	return (len);
-}
-
