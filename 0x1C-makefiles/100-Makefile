@@ -1,7 +1,7 @@
 CC = gcc
 SRC = main.c best.c
 OBJ = $(SRC:%.c=%.o)
-NAME = best
+NAME = school
 CFLAGS = -Wall -Werror -Wextra -pedantic
 
 .PHONY: clean oclean fclean re
